@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.dropdown-content {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  background: #f8f8f8;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.react-calendar {
+    width: 100%;
+    background-color: #fff;
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.125em;
+  }
+  
+  .react-calendar__navigation button {
+    color: #d9534f;
+    min-width: 44px;
+    background: none;
+    font-size: 16px;
+    margin-top: 8px;
+  }
+  
+  .react-calendar__tile--now {
+    background: #F8D7DA;
+  }
+  
+  .react-calendar__tile--active {
+    background: #d9534f;
+    color: white;
+  }
