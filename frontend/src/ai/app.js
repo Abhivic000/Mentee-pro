@@ -10,7 +10,8 @@ app.use(cors());
 app.use(express.json());
 
 app.post("/api/chat", (req, res) => {
-	const input = req.body.input;
+	const input = req.body.message;
+	console.log(input);
 
 	// Spawn a new child process to run the Python script
 	const pythonProcess = spawn("python", ["src/ai/app.py", input]);
