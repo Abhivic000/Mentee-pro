@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import mediro from "../../assets/medi-robot.png";
+import ReactMarkdown from "react-markdown";
 
 const Chatskl = () => {
 	const [messages, setMessages] = useState([]);
@@ -25,7 +26,6 @@ const Chatskl = () => {
 		setIsLoading(true);
 		setError(null);
 
-		// Add temporary loading message for bot
 		const loadingMessage = {
 			text: "",
 			sender: "bot",
@@ -35,13 +35,16 @@ const Chatskl = () => {
 		setMessages((prev) => [...prev, loadingMessage]);
 
 		try {
-			const response = await fetch("http://localhost:3000/api/chat", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
+			const response = await fetch(
+				"https://wzq2s6d5-3000.inc1.devtunnels.ms/api/chat",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ message: input }),
 				},
-				body: JSON.stringify({ message: input }),
-			});
+			);
 			const data = await response.json();
 
 			const botResponseTime = new Date();
@@ -52,10 +55,8 @@ const Chatskl = () => {
 				time: botResponseStrTime,
 			};
 
-			// Replace the loading message with the actual bot response
 			setMessages((prev) => [...prev.slice(0, -1), botMessage]);
-		} catch (error) {
-			console.error("Error fetching response:", error);
+		} catch {
 			setError(input);
 			setMessages((prev) => [
 				...prev.slice(0, -1),
@@ -73,13 +74,14 @@ const Chatskl = () => {
 
 	const handleRetry = async (message) => {
 		setInput(message);
-		handleSubmit(new Event("submit"));
+		await handleSubmit({
+			preventDefault: () => {},
+		});
 	};
 
 	return (
 		<div className="flex justify-center items-center h-screen w-screen bg-gray-100 p-4">
 			<div className="w-full h-full max-w-none bg-white rounded-lg shadow-lg">
-				{/* Header */}
 				<div className="bg-[#52cc99] text-white px-4 py-3 rounded-t-lg flex items-center">
 					<div className="relative mr-3">
 						<img src={mediro} alt="Bot" className="w-12 h-12 rounded-full" />
@@ -91,7 +93,6 @@ const Chatskl = () => {
 					</div>
 				</div>
 
-				{/* Chat Messages */}
 				<div className="h-full max-h-[calc(100vh-200px)] overflow-y-auto p-4 space-y-4">
 					{messages.map((msg, index) => (
 						<div
@@ -116,7 +117,11 @@ const Chatskl = () => {
 									<div className="loader border-t-4 border-b-4 border-green-500 rounded-full w-6 h-6 animate-spin"></div>
 								) : (
 									<>
-										<p>{msg.text}</p>
+										{msg.sender === "bot" ? (
+											<ReactMarkdown>{msg.text}</ReactMarkdown>
+										) : (
+											<p>{msg.text}</p>
+										)}
 										<span className="block text-xs mt-1 text-gray-600">
 											{msg.time}
 										</span>
@@ -150,7 +155,6 @@ const Chatskl = () => {
 					<div ref={messagesEndRef}></div>
 				</div>
 
-				{/* Input Field */}
 				<form
 					onSubmit={handleSubmit}
 					className="flex items-center border-t border-gray-200 p-3">

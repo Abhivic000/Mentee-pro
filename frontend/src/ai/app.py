@@ -54,8 +54,7 @@ def api_chat(input):
      
      return json.dumps({'answer': response['answer']})
 
-# Main entry point for calling api_chat from Node.js
 if __name__ == "__main__":
-    input_text = sys.argv[1]  # The input will be passed as a command-line argument
+    input_text = sys.argv[1]
     result = api_chat(input_text)
-    print(result)  # Output the result so Node.js can capture it
+    print(result)
